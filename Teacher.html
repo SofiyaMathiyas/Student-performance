@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Portal - Year and Department Mapping</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #007bff;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .student-count {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f4f4f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .delete-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .delete-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    /* Eligibility background colors */
+    .eligible-competitions {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .eligible-internship {
+      background-color: #2196f3;
+      color: white;
+    }
+
+    .extra-class {
+      background-color: #ff9800;
+      color: white;
+    }
+
+    .extra-class-library {
+      background-color: #ffeb3b;
+      color: black;
+    }
+
+    .not-eligible {
+      background-color: #f44336;
+      color: white;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Teacher Portal - Year and Department Mapping</h2>
+
+    <!-- Display student count -->
+    <div class="student-count" id="studentCount">Total Students: 0</div>
+
+    <table id="studentTable">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Department</th>
+          <th>Marks</th>
+          <th>Eligibility</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Student details will be inserted here -->
+      </tbody>
+    </table>
+
+    <button class="btn" onclick="logout()">Sign Out</button>
+  </div>
+
+  <script>
+    window.onload = function() {
+      loadStudentData();
+    };
+
+    function loadStudentData() {
+      // Fetch data from localStorage
+      let students = JSON.parse(localStorage.getItem("students")) || [];
+
+      // Sort students by year in ascending order
+      students.sort(function(a, b) {
+        let yearA = parseInt(a.year);  // Assuming year is a string like '1st Year', '2nd Year'
+        let yearB = parseInt(b.year);
+        return yearA - yearB;
+      });
+
+      // Display sorted data in the table
+      const tableBody = document.getElementById("studentTable").getElementsByTagName("tbody")[0];
+      tableBody.innerHTML = '';  // Clear any existing rows
+
+      students.forEach(function(student, index) {
+        const row = document.createElement("tr");
+
+        const cellYear = document.createElement("td");
+        const cellDepartment = document.createElement("td");
+        const cellMarks = document.createElement("td");
+        const cellEligibility = document.createElement("td");
+        const cellAction = document.createElement("td");
+
+        // Display the year, department, and marks
+        cellYear.textContent = student.year;
+        cellDepartment.textContent = student.department;
+        cellMarks.textContent = student.marks;
+
+        // Calculate eligibility based on marks and set background color
+        let eligibilityText = "Not Eligible";
+        let eligibilityClass = "not-eligible";
+        if (student.marks >= 90) {
+          eligibilityText = "Eligible for Competitions/Games";
+          eligibilityClass = "eligible-competitions";
+        } else if (student.marks >= 80) {
+          eligibilityText = "Eligible for Internship";
+          eligibilityClass = "eligible-internship";
+        } else if (student.marks >= 70) {
+          eligibilityText = "Extra Class";
+          eligibilityClass = "extra-class";
+        } else if (student.marks >= 60) {
+          eligibilityText = "Extra Class + Library";
+          eligibilityClass = "extra-class-library";
+        }
+
+        cellEligibility.textContent = eligibilityText;
+        cellEligibility.className = eligibilityClass;
+
+        // Add delete button
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.className = "delete-btn";
+        deleteBtn.onclick = function() {
+          deleteStudent(index);
+        };
+
+        cellAction.appendChild(deleteBtn);
+
+        // Append cells to the row
+        row.appendChild(cellYear);
+        row.appendChild(cellDepartment);
+        row.appendChild(cellMarks);
+        row.appendChild(cellEligibility);
+        row.appendChild(cellAction);
+
+        // Append the row to the table body
+        tableBody.appendChild(row);
+      });
+
+      // Display student count
+      document.getElementById("studentCount").textContent = `Total Students: ${students.length}`;
+    }
+
+    function deleteStudent(index) {
+      // Get current student data
+      let students = JSON.parse(localStorage.getItem("students")) || [];
+
+      // Remove the student from the array
+      students.splice(index, 1);
+
+      // Update the localStorage with the new array
+      localStorage.setItem("students", JSON.stringify(students));
+
+      // Reload the student data
+      loadStudentData();
+    }
+
+    function logout() {
+      window.location.href = "login Page.html";  // Redirect to login page
+    }
+  </script>
+
+</body>
+</html>
