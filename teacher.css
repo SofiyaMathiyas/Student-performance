@@ -1,0 +1,110 @@
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #007bff;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .student-count {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f4f4f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .delete-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .delete-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    /* Eligibility background colors */
+    .eligible-competitions {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .eligible-internship {
+      background-color: #2196f3;
+      color: white;
+    }
+
+    .extra-class {
+      background-color: #ff9800;
+      color: white;
+    }
+
+    .extra-class-library {
+      background-color: #ffeb3b;
+      color: black;
+    }
+
+    .not-eligible {
+      background-color: #f44336;
+      color: white;
+    }
+
+  </style>
